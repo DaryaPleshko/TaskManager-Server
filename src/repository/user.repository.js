@@ -58,7 +58,7 @@ const deleteDataDB = async (id) => {
     } catch (error) {
         await client.query('ROLLBACK');
 
-        throw new Error(error.message);
+        throw new Error(error.message);            
     }
 }
 
