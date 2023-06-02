@@ -1,4 +1,4 @@
-const { getAllUserDB, getUserByIdDB, createUserDB, deleteDataDB } = require('../repository/user.repository');
+const { getAllUserDB, getUserByIdDB, createUserDB, deleteDataDB, updateUserDB } = require('../repository/user.repository');
 
 const getAllUser = async () => {
     const data = await getAllUserDB();
@@ -24,4 +24,10 @@ const deleteUser = async (id) => {
     return data;
 }
 
-module.exports = { getAllUser, getUserById, createUser, deleteUser }
+const updateUser = async (id, name, surname, email, pwd) => {
+    const data = await updateUserDB(id, name, surname, email, pwd);
+    if (!data.length) throw new Error(`Array with this id is empty`);
+    return data;
+};
+
+module.exports = { getAllUser, getUserById, createUser, deleteUser, updateUser }
