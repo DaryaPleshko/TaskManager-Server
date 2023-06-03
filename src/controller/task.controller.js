@@ -51,7 +51,7 @@ route.put('/:id', async (request, response) => {
         buildResponse(response, 200, data);
     } catch (error) {
         buildResponse(response, 404, error.message);
-    }
+    }           
 });
 
 module.exports = route;
