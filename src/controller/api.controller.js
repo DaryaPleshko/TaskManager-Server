@@ -1,6 +1,6 @@
 const express = require('express');
 const { buildResponse } = require('../helper/buildResponse');
-const { createAuth, createReg } = require('../service/task.service');
+const { createAuth, createReg } = require('../service/api.service');
 
 const route = express.Router();
 
