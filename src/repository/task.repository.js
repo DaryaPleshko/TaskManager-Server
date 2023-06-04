@@ -1,4 +1,5 @@
 const { pool } = require('../db');
+const { buildResponse } = require('../helper/buildResponse');
 
 const createTaskDB = async (task, user_id) => {
     const client = await pool.connect();
@@ -80,4 +81,30 @@ const updateTaskByIdDB = async (id, task, user_id) => {
     }
 }
 
-module.exports = { createTaskDB, getAllTaskDB, getTaskByIdDB, deleteTaskByIdDB, updateTaskByIdDB }
+const patchTaskDB = async (id, clientData) => {
+    const client = await pool.connect();
+    try {
+        await client.query('BEGIN');
+
+        const sql = `SELECT * FROM tasks WHERE id = $1`;
+        const gettingSql = (await client.query(sql, [id])).rows;
+
+        const merge = { ...gettingSql[0], ...clientData }
+
+        const newSql = `
+        UPDATE tasks
+        SET task = $1, user_id = $2
+        WHERE id = $3 RETURNING *`;
+        const gettingNewSql = (await client.query(newSql, [merge.task, merge.user_id, id])).rows;
+
+        await client.query('COMMIT');
+
+        return gettingNewSql;
+    } catch (error) {
+        await client.query('ROLLBACK');
+
+        throw new Error(error.message);
+    }
+}
+
+module.exports = { createTaskDB, getAllTaskDB, getTaskByIdDB, deleteTaskByIdDB, updateTaskByIdDB, patchTaskDB }
