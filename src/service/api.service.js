@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const { getUserByEmail, createRegDB } = require('../repository/api.repository');
 
-
+        
 const salt = 2;
 
 const createAuth = async (email, pwd) => {
