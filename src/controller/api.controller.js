@@ -1,24 +1,22 @@
 const express = require('express');
 const { buildResponse } = require('../helper/buildResponse');
-const { createAuth, createReg } = require('../service/api.service');
+const { createReg, createAuth } = require('../service/api.service');
 
 const route = express.Router();
 
-route.post('/auth', async (request, response) => {
+route.post('/reg', async (request, response) => {
     try {
-        const { email, pwd } = request.body;
-        const data = await createAuth(email, pwd);
-        buildResponse(response, 200, data);
+        const { name, surname, email, pwd } = request.body;
+        buildResponse(response, 200, (await createReg(name, surname, email, pwd)));
     } catch (error) {
         buildResponse(response, 404, error.message);
     }
 });
 
-route.post('/reg', async (request, response) => {
+route.post('/auth', async (request, response) => {
     try {
-        const { name, surname, email, pwd } = request.body;
-        const data = await createReg(name, surname, email, pwd);
-        buildResponse(response, 200, data);
+        const { email, pwd } = request.body;
+        buildResponse(response, 200, (await createAuth(email, pwd)));
     } catch (error) {
         buildResponse(response, 404, error.message);
     }
