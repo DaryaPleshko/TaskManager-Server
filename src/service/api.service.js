@@ -18,7 +18,7 @@ const createAuth = async (email, pwd) => {
     if (!findEmail.length) throw new Error(`You are not registered`);
 
     if (!(await bcrypt.compare(pwd, findEmail[0].pwd))) throw new Error(`Password don't match`);
-    return findEmail;
+    return findEmail;    
 }
 
 module.exports = { createReg, createAuth }
